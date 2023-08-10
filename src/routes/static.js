@@ -1,5 +1,5 @@
-const router = require('express').Router();
 const path = require('path');
+const router = require('express').Router();
 
 const {
   GOOGLE_TAG_ID,

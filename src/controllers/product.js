@@ -6,11 +6,13 @@ const {
   limitArray,
 } = require('../utils/util');
 
+const model = require('../models/product');
+
 const controller = {};
 
 // get all products
-controller.getAllProducts = ({ limit, skip, select }) => {
-  let [...products] = frozenData.products;
+controller.getAllProducts = async ({ limit, skip, select }) => {
+  let [...products] = await model.find();
   const total = products.length;
 
   if (skip > 0) {
@@ -29,13 +31,17 @@ controller.getAllProducts = ({ limit, skip, select }) => {
 };
 
 // search products
-controller.searchProducts = ({ limit, skip, select, q: searchQuery }) => {
-  let [...products] = frozenData.products.filter(p => {
-    return (
-      p.title.toLowerCase().includes(searchQuery) ||
-      p.description.toLowerCase().includes(searchQuery)
-    );
-  });
+controller.searchProducts = async ({ limit, skip, select, q: searchQuery }) => {
+  let [...products] = await model.find(
+    { title: { $regex: `${searchQuery}`, $options: 'i' } },
+    (err, results) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      return results;
+    },
+  );
   const total = products.length;
 
   if (skip > 0) {
@@ -104,7 +110,7 @@ controller.getProductsByCategoryName = ({ categoryName = '', ..._options }) => {
 };
 
 // add new product
-controller.addNewProduct = ({ ...data }) => {
+controller.addNewProduct = async ({ ...data }) => {
   const {
     title,
     price,
@@ -118,7 +124,6 @@ controller.addNewProduct = ({ ...data }) => {
   } = data;
 
   const newProduct = {
-    id: frozenData.products.length + 1,
     title,
     price,
     stock,
@@ -129,8 +134,9 @@ controller.addNewProduct = ({ ...data }) => {
     brand,
     category,
   };
-
-  return newProduct;
+  const result = await model.create(newProduct);
+  console.log(result);
+  return result;
 };
 
 // update product by id

@@ -54,10 +54,10 @@ const cleanRequest = (req, res, next) => {
     options.key = key;
     options.value = value;
 
-    if (req.headers['content-type']?.startsWith('multipart/form-data')) {
-      upload.none()(req, res, next);
-      return;
-    }
+    // if (req.headers['content-type']?.startsWith('multipart/form-data')) {
+    //   upload.none()(req, res, next);
+    //   return;
+    // }
 
     next();
   } catch (e) {

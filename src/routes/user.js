@@ -10,24 +10,28 @@ const {
   updateUserById,
   deleteUserById,
   filterUsers,
+  getProfile,
 } = require('../controllers/user');
 const { verifyUserHandler } = require('../helpers');
+const authUser = require('../middleware/auth');
 
 // get all users
-router.get('/', (req, res) => {
-  res.send(getAllUsers({ ...req._options }));
+router.get('/', async (req, res) => {
+  res.send(await getAllUsers({ ...req._options }));
 });
 
 // search users
 router.get('/search', (req, res) => {
-  res.send(searchUsers({ ...req._options }));
+  res.send(searchUsers({ ...req._options },res));
 });
 
 // filter users
 router.get('/filter', (req, res) => {
   res.send(filterUsers({ ...req._options }));
 });
-
+router.post('/profile', authUser, async (req, res) => {
+  res.send(await getProfile(req));
+});
 // get user by id
 router.get('/:id', (req, res) => {
   const { id } = req.params;

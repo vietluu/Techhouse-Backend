@@ -18,6 +18,14 @@ mongoose
 
     process.exit(1);
   });
+mongoose.connection
+  .once('open', function() {
+    console.log('Đã kết nối thành công với MongoDB');
+    // Tiếp tục thực hiện các thao tác với MongoDB ở đây
+  })
+  .on('error', function(error) {
+    console.log('Lỗi kết nối với MongoDB:', error);
+  });
 
 // If mongoose gets disconnected, show this message
 mongoose.connection.on('disconnected', () => {

@@ -11,13 +11,13 @@ const {
 } = require('../controllers/product');
 
 // get all products
-router.get('/', (req, res) => {
-  res.send(getAllProducts({ ...req._options }));
+router.get('/', async (req, res) => {
+  res.send(await getAllProducts({ ...req._options }));
 });
 
 // search product
-router.get('/search', (req, res) => {
-  res.send(searchProducts({ ...req._options }));
+router.get('/search', async (req, res) => {
+  res.send(await searchProducts({ ...req._options }));
 });
 
 // get product categories
@@ -41,8 +41,8 @@ router.get('/category/:categoryName', (req, res) => {
 });
 
 // add new product
-router.post('/add', (req, res) => {
-  res.send(addNewProduct({ ...req.body }));
+router.post('/add', async (req, res) => {
+  res.send(await addNewProduct({ ...req.body }));
 });
 
 // update product by id (PUT)

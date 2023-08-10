@@ -1,18 +1,17 @@
 const APIError = require('../utils/error');
 const { generateToken } = require('../utils/jwt');
-const { dataInMemory: frozenData } = require('../utils/util');
+
+const model = require('../models/user');
 
 const controller = {};
 
 // login user by username and password
 controller.loginByUsernamePassword = async data => {
-  const { username, password, expiresInMins } = data;
-
-  const user = frozenData.users.find(u => {
-    const validUsername = u.username.toLowerCase() === username.toLowerCase();
-    const validPassword = u.password === password;
-
-    return validUsername && validPassword;
+  const { email, password, expiresInMins } = data;
+  console.log(email, password);
+  const user = await model.findOne({
+    email: email.toLowerCase(),
+    password,
   });
 
   if (!user) {
@@ -21,21 +20,15 @@ controller.loginByUsernamePassword = async data => {
 
   const payload = {
     id: user.id,
-    username: user.username,
     email: user.email,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    gender: user.gender,
+    name: user.name,
     image: user.image,
-    country: user.country,
-    city: user.city,
   };
 
   try {
     const token = await generateToken(payload, expiresInMins);
 
     return {
-      ...payload,
       token,
     };
   } catch (err) {

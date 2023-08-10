@@ -8,7 +8,7 @@ const maxTokenExpireTime = 60 * 24 * 30; // 30 days
 // login user
 router.post('/login', async (req, res, next) => {
   try {
-    const { username = '', password = '' } = req.body;
+    const { email, password } = req.body;
     let { expiresInMins = 60 } = req.body;
 
     if (!isNumber(expiresInMins)) expiresInMins = 60;
@@ -21,7 +21,7 @@ router.post('/login', async (req, res, next) => {
     }
 
     const payload = await loginByUsernamePassword({
-      username,
+      email,
       password,
       expiresInMins,
     });

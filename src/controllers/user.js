@@ -1,3 +1,4 @@
+const Model = require('../models/user');
 const { verifyUserHandler } = require('../helpers');
 const {
   dataInMemory: frozenData,
@@ -10,8 +11,8 @@ const {
 const controller = {};
 
 // get all users
-controller.getAllUsers = ({ limit, skip, select }) => {
-  let [...users] = frozenData.users;
+controller.getAllUsers = async ({ limit, skip, select }) => {
+  let users = await Model.find();
   const total = users.length;
 
   if (skip > 0) {
@@ -25,7 +26,6 @@ controller.getAllUsers = ({ limit, skip, select }) => {
   }
 
   const result = { users, total, skip, limit: users.length };
-
   return result;
 };
 
@@ -62,7 +62,6 @@ controller.filterUsers = ({ limit, skip, select, key, value }) => {
     const val = getNestedValue(u, key);
     return val && val.toString() === value;
   });
-
   const total = users.length;
 
   if (skip > 0) {
@@ -80,6 +79,16 @@ controller.filterUsers = ({ limit, skip, select, key, value }) => {
   return result;
 };
 
+controller.getProfile = async req => {
+  const user = await Model.findById(req.user);
+  const data = {
+    id: user.id,
+    name: user.name,
+    image: user.image,
+    email: user.email,
+  };
+  return data;
+};
 // get user by id
 controller.getUserById = ({ id, select }) => {
   let { ...user } = verifyUserHandler(id);

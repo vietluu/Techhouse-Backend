@@ -1,14 +1,16 @@
 // require node version>=14.0 to run the app,
 // because we use optional chaining etc...
+const path = require('path');
 const express = require('express');
 const injectMiddleWares = require('./src/middleware');
 const errorMiddleware = require('./src/middleware/error');
 const authUser = require('./src/middleware/auth');
 const routes = require('./src/routes');
+
 const { validateEnvVar, loadDataInMemory } = require('./src/utils/util');
 const { version } = require('./package.json');
 
-const { PORT = 3000, NODE_ENV } = process.env;
+const { PORT = 3001, NODE_ENV } = process.env;
 
 // validate if we have all the env variables setup.
 validateEnvVar();
@@ -21,22 +23,24 @@ loadDataInMemory();
 // set up all middleware
 injectMiddleWares(app);
 
-// set ejs as view engine
-app.set('view engine', 'ejs');
-
 // serving static files
 app.use('/static', express.static('./public'));
-
-// serving internal (products) images
-app.use('/image/i', (req, res) => {
-  res.redirect(`https://i.dummyjson.com/data${req.path}`);
+// eslint-disable-next-line no-undef
+app.get('/', (req, res) => {
+  res.sendStatus(200);
 });
-
+// serving internal (products) images
+app.use('/', express.static(path.join(__dirname, 'public')));
 // routes
-app.use('/', routes);
+app.use('/api/v1/', routes);
 
 // routes with authorization
-app.use('/auth/', authUser, routes);
+app.use('/api/v1/auth/', authUser, routes);
+
+// app.get('/', async (req, res) => {
+//   console.log(req.path);
+//   res.send(await express.static(path.join(__dirname, req.path)));
+// });
 
 app.get('*', (req, res) => {
   res.status(404).send('not found!');
