@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const controller = require('../controllers/auth');
+// const controller = require('../controllers/auth');
 const { loginByUsernamePassword } = require('../controllers/auth');
 const APIError = require('../utils/error');
 const { isNumber } = require('../utils/util');
@@ -41,14 +41,14 @@ router.post('/login', authUser, async (req, res, next) => {
     next(error);
   }
 });
-router.post('/register', async (req, res) => {
-  await controller.register(req, res);
-});
-router.post('/resend-code', async (res, req) => {
-  await controller.ResendCode(res, req);
-});
-router.post('/verify', async (req, res) => {
-  await controller.verify(req, res);
-});
+// router.post('/register', async (req, res) => {
+//   await controller.register(req, res);
+// });
+// router.post('/resend-code', async (res, req) => {
+//   await controller.ResendCode(res, req);
+// });
+// router.post('/verify', async (req, res) => {
+//   await controller.verify(req, res);
+// });
 
 module.exports = router;
