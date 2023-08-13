@@ -12,11 +12,7 @@
     { "src": "/(.*)", "dest": "/public" },
     {
       "src": "/api/v1/(.*)",
-      "dest": "src/routes/index.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.js"
+      "dest": "src/routes/*.js"
     }
   ]
 }
