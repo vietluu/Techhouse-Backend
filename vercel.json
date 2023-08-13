@@ -8,11 +8,11 @@
     }
   ],
   "routes": [
-    { "src": "/static/(.*)", "dest": "/public/$1" },
-    { "src": "/(.*)", "dest": "/index.js" },
+    { "src": "/static/(.*)", "dest": "/public" },
+    { "src": "/(.*)", "dest": "/public" },
     {
       "src": "/api/v1/(.*)",
-      "dest": "/index.js"
+      "dest": "src/routes/index.js"
     },
     {
       "src": "/(.*)",
