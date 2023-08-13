@@ -1,10 +1,10 @@
 {
-  "name": "dummy-json-backend",
+  "name": "techhouse",
   "version": "0.0.5",
   "main": "index.js",
-  "author": "Muhammad Ovi <contact@muhammadovi.com>",
+  "author": "viet",
   "scripts": {
-    "start": "node index.js",
+    "start": "env-cmd -f .env node index.js",
     "dev": "env-cmd -f config/dev.env nodemon index.js"
   },
   "engines": {
