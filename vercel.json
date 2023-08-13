@@ -1,18 +1,18 @@
 {
   "version": 2,
-  "public": true,
-  "builds": [
-    {
-      "src": "index.js",
-      "use": "@vercel/node"
+  "public": false,
+  "functions": {
+    "api/v1/:file": {
+      "handler": "src/routes/api/:file.js"
     }
-  ],
+  },
   "routes": [
-    { "src": "/static/(.*)", "dest": "/public" },
-    { "src": "/(.*)", "dest": "/public" },
+    { "src": "/static/(.*)", "dest": "/public/$1" },
+    { "src": "/(.*)", "dest": "/index.html" },
     {
       "src": "/api/v1/(.*)",
-      "dest": "src/routes/$1.js"
+      "dest": "api/v1/:file"
     }
-  ]
+  ],
+  "output": "dist"
 }
