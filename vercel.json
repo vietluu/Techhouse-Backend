@@ -3,7 +3,7 @@
   "public": false,
   "functions": {
     "api/v1/:file": {
-      "handler": "src/routes/api/:file.js"
+      "handler": "src/routes/:file.js"
     }
   },
   "routes": [
