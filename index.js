@@ -4,7 +4,6 @@ const path = require('path');
 const express = require('express');
 const injectMiddleWares = require('./src/middleware');
 const errorMiddleware = require('./src/middleware/error');
-const authUser = require('./src/middleware/auth');
 const routes = require('./src/routes');
 
 const { validateEnvVar, loadDataInMemory } = require('./src/utils/util');
@@ -35,7 +34,7 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 app.use('/api/v1/', routes);
 
 // routes with authorization
-app.use('/api/v1/auth/', authUser, routes);
+// app.use('/api/v1/auth/', authUser, routes);
 
 // app.get('/', async (req, res) => {
 //   console.log(req.path);
@@ -45,7 +44,10 @@ app.use('/api/v1/auth/', authUser, routes);
 app.get('*', (req, res) => {
   res.status(404).send('not found!');
 });
-
+app.use((req, res, next) => {
+  res.set('Content-Type', 'application/json');
+  next();
+});
 // use custom middleware for errors
 app.use(errorMiddleware);
 
