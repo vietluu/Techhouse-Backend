@@ -91,3 +91,4 @@ typings/
 .firebaserc
 firebase.json
 *.cache
+.vercel

@@ -1,18 +1,16 @@
 {
   "version": 2,
-  "public": false,
-  "functions": {
-    "api/v1/:file": {
-      "handler": "src/routes/:file.js"
-    }
-  },
-  "routes": [
-    { "src": "/static/(.*)", "dest": "/public/$1" },
-    { "src": "/(.*)", "dest": "/index.js" },
+  "builds": [
     {
-      "src": "/api/v1/(.*)",
-      "dest": "api/v1/:file"
+      "src": "*.js", 
+      "use": "@vercel/node@latest" 
     }
   ],
-  "output": "dist"
+  "routes": [
+   
+    {
+      "src": "/(.*)",
+      "dest": "/" 
+    }
+  ]
 }
